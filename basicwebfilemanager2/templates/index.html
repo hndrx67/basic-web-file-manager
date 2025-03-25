@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Browser</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        h2 { color: #333; }
+        ul { list-style-type: none; padding: 0; }
+        li { margin: 5px 0; }
+        a { text-decoration: none; color: blue; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h2>Browsing: /{{ path }}</h2>
+    
+    {% if path %}
+        <p><a href="{{ url_for('browse', path=path.rsplit('/', 1)[0]) }}">🔙 Back</a></p>
+    {% endif %}
+    
+    <h3>Directories</h3>
+    <ul>
+        {% for directory in directories %}
+            <li>📁 <a href="{{ url_for('browse', path=path + '/' + directory if path else directory) }}">{{ directory }}</a></li>
+        {% endfor %}
+    </ul>
+    
+    <h3>Files</h3>
+    <ul>
+        {% for file in files %}
+            <li>📄 <a href="{{ url_for('download', path=path + '/' + file if path else file) }}">{{ file }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

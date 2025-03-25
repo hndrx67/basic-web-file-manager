@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>File Browser</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .directory {
+            color: blue;
+        }
+        .file {
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <h1>File Browser</h1>
+    <p>Base Directory: {{ base_dir }}</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Size (bytes)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for file in files %}
+            <tr>
+                <td>
+                    {% if file.type == 'directory' %}
+                        <span class="directory">📁 {{ file.name }}</span>
+                    {% else %}
+                        <span class="file">📄 {{ file.name }}</span>
+                    {% endif %}
+                </td>
+                <td>{{ file.type }}</td>
+                <td>
+                    {% if file.type == 'file' %}
+                        {{ file.size }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>
+                    {% if file.type == 'file' %}
+                        <a href="{{ url_for('download_file', filepath=file.path) }}">Download</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
